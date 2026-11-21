@@ -6,7 +6,7 @@ import plotly.graph_objects as go
 import plotly.express as px
 import os
 
-# --- Page Configuration ---
+# doing Page Configuration
 st.set_page_config(
     page_title="Hyperlocal AQI Intelligence Dashboard",
     page_icon="🌍",
@@ -14,7 +14,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# --- Custom Modern CSS ---
+# Custom Modern CSS 
 st.markdown("""
 <style>
     .hero-banner {
@@ -78,7 +78,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# --- Load Model & Optional Dataset ---
+# Loading Model & Optional Dataset 
 FEATURES = ['PM2.5', 'PM10', 'NO2', 'NH3', 'CO', 'SO2', 'O3']
 
 @st.cache_resource
@@ -96,7 +96,7 @@ def load_city_data():
 model = load_model()
 city_df = load_city_data()
 
-# --- Indian CPCB AQI Helper ---
+# create Indian CPCB AQI Helper 
 def get_aqi_details(aqi):
     if aqi <= 50:
         return ("Good", "#16A34A", "Minimal impact. Air is clean and fresh.",
@@ -117,7 +117,7 @@ def get_aqi_details(aqi):
         return ("Severe", "#7F1D1D", "Health emergency! Affects healthy people and seriously impacts those with conditions.",
                 "No Outdoor", "Seal Tight", "N95 Mandatory", "Max Mode")
 
-# --- Plotly AQI Gauge ---
+# create Plotly AQI Gauge 
 def create_aqi_gauge(aqi_val, color, category):
     fig = go.Figure(go.Indicator(
         mode="gauge+number",
@@ -142,7 +142,7 @@ def create_aqi_gauge(aqi_val, color, category):
     fig.update_layout(height=280, margin=dict(l=20, r=20, t=40, b=10), paper_bgcolor="rgba(0,0,0,0)")
     return fig
 
-# --- Session State for Presets ---
+# Session State for Presets 
 defaults = {"pm25": 65.0, "pm10": 115.0, "no2": 32.0, "nh3": 20.0, "co": 1.1, "so2": 14.0, "o3": 38.0}
 for k, v in defaults.items():
     if k not in st.session_state:
@@ -157,7 +157,7 @@ def set_preset(pm25, pm10, no2, nh3, co, so2, o3):
     st.session_state.so2 = so2
     st.session_state.o3 = o3
 
-# --- Sidebar ---
+
 with st.sidebar:
     st.markdown("## 🌍 AQI Control Panel")
     st.caption("Quickly simulate real-world air quality scenarios:")
@@ -170,7 +170,7 @@ with st.sidebar:
     st.markdown("**Standard:** Indian CPCB AQI")
     st.markdown("**Dataset:** India Air Quality (2015–2020)")
 
-# --- Hero Header ---
+
 st.markdown("""
 <div class="hero-banner">
     <div class="hero-title">🌍 Hyperlocal Air Pollution (AQI) Predictor</div>
@@ -178,7 +178,7 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# --- Main Tabs ---
+# creating Main Tabs 
 tab1, tab2, tab3, tab4 = st.tabs([
     "🎛️ Live AQI Predictor",
     "🏙️ Indian City Explorer",
@@ -186,9 +186,8 @@ tab1, tab2, tab3, tab4 = st.tabs([
     "📊 Model & CPCB Guide"
 ])
 
-# ==========================================
+
 # TAB 1: LIVE AQI PREDICTOR
-# ==========================================
 with tab1:
     left_col, right_col = st.columns([1.05, 1.25], gap="large")
 
@@ -205,7 +204,7 @@ with tab1:
             nh3  = st.slider("NH₃ (µg/m³)", 0.0, 150.0, key="nh3", step=1.0)
             so2  = st.slider("SO₂ (µg/m³)", 0.0, 150.0, key="so2", step=1.0)
 
-        # Dominant Pollutant Calculation (relative to safe limits)
+        # Dominant Pollutant Calculation 
         ratios = {
             "PM2.5": pm25 / 60, "PM10": pm10 / 100, "NO₂": no2 / 80,
             "NH₃": nh3 / 400, "CO": co / 2.0, "SO₂": so2 / 80, "O₃": o3 / 100
@@ -248,9 +247,8 @@ with tab1:
     fig_bar.update_layout(showlegend=False, margin=dict(l=10, r=10, t=10, b=10))
     st.plotly_chart(fig_bar, use_container_width=True)
 
-# ==========================================
+
 # TAB 2: INDIAN CITY EXPLORER
-# ==========================================
 with tab2:
     st.subheader("🏙️ Historical Air Quality Across Indian Cities (2015–2020)")
     if city_df is None:
@@ -277,9 +275,8 @@ with tab2:
         fig_line.update_layout(height=360)
         st.plotly_chart(fig_line, use_container_width=True)
 
-# ==========================================
+
 # TAB 3: BATCH CSV PREDICTION
-# ==========================================
 with tab3:
     st.subheader("📂 Bulk AQI Prediction from CSV")
     st.write(f"Upload a CSV file containing these columns: `{', '.join(FEATURES)}`")
@@ -308,9 +305,8 @@ with tab3:
                 type="primary"
             )
 
-# ==========================================
+
 # TAB 4: MODEL INSIGHTS & CPCB REFERENCE
-# ==========================================
 with tab4:
     col_a, col_b = st.columns(2, gap="large")
 
