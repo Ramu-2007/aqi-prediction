@@ -96,7 +96,7 @@ def load_city_data():
 model = load_model()
 city_df = load_city_data()
 
-# create Indian CPCB AQI Helper 
+# creating Indian CPCB AQI Helper 
 def get_aqi_details(aqi):
     if aqi <= 50:
         return ("Good", "#16A34A", "Minimal impact. Air is clean and fresh.",
@@ -117,7 +117,7 @@ def get_aqi_details(aqi):
         return ("Severe", "#7F1D1D", "Health emergency! Affects healthy people and seriously impacts those with conditions.",
                 "No Outdoor", "Seal Tight", "N95 Mandatory", "Max Mode")
 
-# create Plotly AQI Gauge 
+# creating Plotly AQI Gauge 
 def create_aqi_gauge(aqi_val, color, category):
     fig = go.Figure(go.Indicator(
         mode="gauge+number",
@@ -187,7 +187,7 @@ tab1, tab2, tab3, tab4 = st.tabs([
 ])
 
 
-# TAB 1: LIVE AQI PREDICTOR
+# Tab 1: LIVE AQI PREDICTOR
 with tab1:
     left_col, right_col = st.columns([1.05, 1.25], gap="large")
 
@@ -248,7 +248,7 @@ with tab1:
     st.plotly_chart(fig_bar, use_container_width=True)
 
 
-# TAB 2: INDIAN CITY EXPLORER
+# Tab 2: INDIAN CITY EXPLORER
 with tab2:
     st.subheader("🏙️ Historical Air Quality Across Indian Cities (2015–2020)")
     if city_df is None:
@@ -276,7 +276,7 @@ with tab2:
         st.plotly_chart(fig_line, use_container_width=True)
 
 
-# TAB 3: BATCH CSV PREDICTION
+# Tab 3: BATCH CSV PREDICTION
 with tab3:
     st.subheader("📂 Bulk AQI Prediction from CSV")
     st.write(f"Upload a CSV file containing these columns: `{', '.join(FEATURES)}`")
@@ -306,7 +306,7 @@ with tab3:
             )
 
 
-# TAB 4: MODEL INSIGHTS & CPCB REFERENCE
+# Tab 4: MODEL INSIGHTS & CPCB REFERENCE
 with tab4:
     col_a, col_b = st.columns(2, gap="large")
 
